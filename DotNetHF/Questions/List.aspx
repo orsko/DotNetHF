@@ -143,6 +143,8 @@
         <asp:Parameter Name="original_ID" Type="Int32" />
     </UpdateParameters>
 </asp:SqlDataSource>
+    <h6>Kérdés exportálása XML fájlként</h6>
+        <asp:Button ID="Button2" runat="server" Text="Export" OnClick="Button2_Click" />
         <h6>Új kérdés feltöltése XML fájlból</h6>
     <asp:FileUpload ID="FileUpload1" runat="server" />
     <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Feltöltés" />
