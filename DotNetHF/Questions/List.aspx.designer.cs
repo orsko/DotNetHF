@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetHF {
+namespace DotNetHF.Questions {
     
     
     public partial class Questions {

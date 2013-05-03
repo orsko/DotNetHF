@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace DotNetHF
+namespace DotNetHF.Questions
 {
     public partial class Questions : System.Web.UI.Page
     {
@@ -17,12 +13,20 @@ namespace DotNetHF
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if(Request.QueryString.AllKeys.Contains("NeedUpload"))
+                if (Request.QueryString["NeedUpload"].Equals("true"))
+                {
+                    xDoc = (XDocument)Session["xDoc"];
+                    InsertData();
+                }                       
         }
         protected void XmlExportButtonAction(object sender, EventArgs e)
         {
             var s = 0;
         }
+
+        private XDocument xDoc;
+
         protected void Button1_Click(object sender, EventArgs e)
         {
             try
@@ -30,47 +34,37 @@ namespace DotNetHF
                 if (FileUpload1.HasFile)
                 {
                     //LINQ 2 SQL elemek lekérése az xml-ből
-                    XDocument xDoc = XDocument.Load(FileUpload1.FileContent);
-                    XNamespace ns = "urn:question-schema";
-                    string question = xDoc.Descendants(ns + "question").FirstOrDefault().Value.ToString();
-
-                    string answer1 = xDoc.Descendants(ns + "answer1").FirstOrDefault().Value.ToString();
-                    string answer2 = xDoc.Descendants(ns + "answer2").FirstOrDefault().Value.ToString();
-                    string answer3 = xDoc.Descendants(ns + "answer3").FirstOrDefault().Value.ToString();
-                    string answer4 = xDoc.Descendants(ns + "answer4").FirstOrDefault().Value.ToString();
-                    string rightanswer = xDoc.Descendants(ns + "rightanswer").FirstOrDefault().Value.ToString();
-
-                    string position = xDoc.Descendants(ns + "position").FirstOrDefault().Value.ToString();
-                    string image = xDoc.Descendants(ns + "image").FirstOrDefault().Value.ToString();
-                    int cityId = int.Parse(xDoc.Descendants(ns + "city").FirstOrDefault().Value.ToString());
-
-                    // adatok betöltése az adatbázisba
+                    xDoc = XDocument.Load(FileUpload1.FileContent);
+                    Session["xDoc"] = xDoc;
+                    //Kérdés összehasonlítása
                     using (var conn = new SqlConnection(CONNSTR))
                     {
+                        XNamespace ns = "urn:question-schema";
+                        var question = xDoc.Descendants(ns + "question")
+                                                            .FirstOrDefault()
+                                                            .Value.ToString();
                         SqlCommand command = new SqlCommand();
                         command.Connection = conn;
-                        command.CommandText =
-                            @"INSERT INTO [Questions] ([Question], [Date], [Position], [Answer1], [Answer2], [Answer3], [Answer4], [RightAnswer], [Image], [CityID]) VALUES (@Question, @Date, @Position, @Answer1, @Answer2, @Answer3, @Answer4, @RightAnswer, @Image, @CityID)";
+                        command.CommandText = @"SELECT [Date] FROM [Questions] WHERE [Question] LIKE @Question";
+                        
                         command.Parameters.AddWithValue("@Question", question);
-                        command.Parameters.AddWithValue("@Date", DateTime.Now);
-                        command.Parameters.AddWithValue("@Position", position);
-                        command.Parameters.AddWithValue("@Answer1", answer1);
-                        command.Parameters.AddWithValue("@Answer2", answer2);
-                        command.Parameters.AddWithValue("@Answer3", answer3);
-                        command.Parameters.AddWithValue("@Answer4", answer4);
-                        command.Parameters.AddWithValue("@RightAnswer", rightanswer);
-                        command.Parameters.AddWithValue("@Image", image);
-                        command.Parameters.AddWithValue("@CityID", cityId);
+                                                        
                         conn.Open();
-                        int num = command.ExecuteNonQuery();
-                        conn.Close();
-                        if (num > 0)
+                        using (var reader = command.ExecuteReader())
                         {
-                            num = 0;
+                            if (reader.HasRows)
+                            {
+                                reader.Read();
+                                var date = reader.GetDateTime(0).ToString();
+                                Response.Redirect("~/Questions/InsertQuestionNotification.aspx?Question="+question+"&date="+date);
+                            }
+                            else
+                            {
+                                //Adatok betöltése adatbázisba
+                                InsertData();
+                            }
                         }
                     }
-                    // Oldal újratöltése
-                    Response.Redirect(Request.RawUrl);
                 }
                 else
                 {
@@ -81,6 +75,51 @@ namespace DotNetHF
             {
                 Response.Write("<script>alert('Nem megfelelő fájl')</script>");
             }
+        }       
+
+        public void InsertData()
+        {
+            XNamespace ns = "urn:question-schema";
+            string question = xDoc.Descendants(ns + "question").FirstOrDefault().Value.ToString();
+
+            string answer1 = xDoc.Descendants(ns + "answer1").FirstOrDefault().Value.ToString();
+            string answer2 = xDoc.Descendants(ns + "answer2").FirstOrDefault().Value.ToString();
+            string answer3 = xDoc.Descendants(ns + "answer3").FirstOrDefault().Value.ToString();
+            string answer4 = xDoc.Descendants(ns + "answer4").FirstOrDefault().Value.ToString();
+            string rightanswer = xDoc.Descendants(ns + "rightanswer").FirstOrDefault().Value.ToString();
+
+            string position = xDoc.Descendants(ns + "position").FirstOrDefault().Value.ToString();
+            string image = xDoc.Descendants(ns + "image").FirstOrDefault().Value.ToString();
+            int cityId = int.Parse(xDoc.Descendants(ns + "city").FirstOrDefault().Value.ToString());
+            
+            // adatok betöltése az adatbázisba
+            using (var conn = new SqlConnection(CONNSTR))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = conn;
+                command.CommandText =
+                    @"INSERT INTO [Questions] ([Question], [Date], [Position], [Answer1], [Answer2], [Answer3], [Answer4], [RightAnswer], [Image], [CityID]) VALUES (@Question, @Date, @Position, @Answer1, @Answer2, @Answer3, @Answer4, @RightAnswer, @Image, @CityID)";
+                command.Parameters.AddWithValue("@Question", question);
+                command.Parameters.AddWithValue("@Date", DateTime.Now);
+                command.Parameters.AddWithValue("@Position", position);
+                command.Parameters.AddWithValue("@Answer1", answer1);
+                command.Parameters.AddWithValue("@Answer2", answer2);
+                command.Parameters.AddWithValue("@Answer3", answer3);
+                command.Parameters.AddWithValue("@Answer4", answer4);
+                command.Parameters.AddWithValue("@RightAnswer", rightanswer);
+                command.Parameters.AddWithValue("@Image", image);
+                command.Parameters.AddWithValue("@CityID", cityId);
+                conn.Open();
+                int num = command.ExecuteNonQuery();
+                conn.Close();
+                if (num > 0)
+                {
+                    num = 0;
+                }
+            }
+
+            // Oldal újratöltése
+            Response.Redirect("/Questions/List.aspx");
         }
 
         protected void Button2_Click(object sender, EventArgs e)
@@ -111,7 +150,15 @@ namespace DotNetHF
                         string answer3 = reader.GetString(5);
                         string answer4 = reader.GetString(6);
                         string rightanswer = reader.GetString(7);
-                        string image = reader.GetString(8);
+                        string image;
+                        try
+                        {
+                            image = reader.GetString(8);
+                        }
+                        catch (Exception)
+                        {
+                            image = "";
+                        }
                         int cityId = reader.GetInt32(10);
 
                         conn.Close();
