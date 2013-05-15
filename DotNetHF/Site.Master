@@ -38,12 +38,12 @@
     </asp:ScriptManager>
     <header>
         <div class="content-wrapper">
-            <div class="float-left">
+            <div class="float-right">
                 <p class="site-title">
-                    <a runat="server" href="~/">Városismereti vetélkedő</a>
+                    <a runat="server" href="~/">Városi történelem kvíz</a>
                 </p>
             </div>
-            <div class="float-right">
+            <div class="float-left">
                 <section id="login">
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
                         <AnonymousTemplate>
@@ -56,20 +56,11 @@
                             <p>
                                 Hello, <a runat="server" class="username" href="~/Account/Manage" title="Manage your account">
                                     <asp:LoginName runat="server" CssClass="username" /></a>!
-                                <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" />
+                                <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Kijelentkezés" LogoutPageUrl="~/" />
                             </p>
                         </LoggedInTemplate>
                     </asp:LoginView>
                 </section>
-                <nav>
-                    <ul id="menu">
-                        <li><a runat="server" href="~/">Főoldal</a></li>
-                        <li><a id="questions" runat="server" href="~/Questions/List">Kérdések</a></li>
-                        <li><a id="players" runat="server" href="~/Players/List">Játékosok</a></li>
-                        <li><a runat="server" href="~/About">Info</a></li>
-                        <li><a runat="server" href="~/Contact">Kapcsolat</a></li>
-                    </ul>
-                </nav>
             </div>
         </div>
     </header>
@@ -79,10 +70,19 @@
             <asp:ContentPlaceHolder runat="server" ID="MainContent" />
         </section>
     </div>
-    <footer>
+    <footer>        
         <div class="content-wrapper">
+            <nav>
+                    <ul id="menu">
+                        <li><a id="A1" runat="server" href="~/">Főoldal</a></li>
+                        <li><a id="questions" runat="server" href="~/Questions/List">Kérdések</a></li>
+                        <li><a id="players" runat="server" href="~/Players/List">Játékosok</a></li>
+                        <li><a id="A2" runat="server" href="~/About">Info</a></li>
+                        <li><a id="A3" runat="server" href="~/Contact">Kapcsolat</a></li>
+                    </ul>
+            </nav>
             <div class="float-left">
-                <p>&copy; <%: DateTime.Now.Year %> - Városismereti vetélkedő</p>
+                <p>&copy; <%: DateTime.Now.Year %> - Városi történelem kvíz</p>
             </div>
         </div>
     </footer>

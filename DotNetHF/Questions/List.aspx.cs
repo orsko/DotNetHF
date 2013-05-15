@@ -17,7 +17,7 @@ namespace DotNetHF.Questions
                 if (Request.QueryString["NeedUpload"].Equals("true"))
                 {
                     xDoc = (XDocument)Session["xDoc"];
-                    InsertData();
+                    InsertData(true);
                 }                       
         }
         protected void XmlExportButtonAction(object sender, EventArgs e)
@@ -61,7 +61,7 @@ namespace DotNetHF.Questions
                             else
                             {
                                 //Adatok betöltése adatbázisba
-                                InsertData();
+                                InsertData(false);
                             }
                         }
                     }
@@ -76,8 +76,8 @@ namespace DotNetHF.Questions
                 Response.Write("<script>alert('Nem megfelelő fájl')</script>");
             }
         }       
-
-        public void InsertData()
+        
+        public void InsertData(bool update)
         {
             XNamespace ns = "urn:question-schema";
             string question = xDoc.Descendants(ns + "question").FirstOrDefault().Value.ToString();
@@ -97,8 +97,26 @@ namespace DotNetHF.Questions
             {
                 SqlCommand command = new SqlCommand();
                 command.Connection = conn;
-                command.CommandText =
-                    @"INSERT INTO [Questions] ([Question], [Date], [Position], [Answer1], [Answer2], [Answer3], [Answer4], [RightAnswer], [Image], [CityID]) VALUES (@Question, @Date, @Position, @Answer1, @Answer2, @Answer3, @Answer4, @RightAnswer, @Image, @CityID)";
+                if (update)
+                {
+                    command.CommandText =
+                        @"UPDATE [Questions] SET [Date] = @Date,
+                                                 [Position] = @Position,
+                                                 [Answer1] = @Answer1,
+                                                 [Answer2] = @Answer2,
+                                                 [Answer3] = @Answer3,
+                                                 [Answer4] = @Answer4,
+                                                 [RightAnswer] = @RightAnswer,
+                                                 [Image] = @Image,
+                                                 [CityID] = @CityID
+                                            WHERE [Question] LIKE @Question";
+                }
+                else
+                {
+                    command.CommandText =
+                        @"INSERT INTO [Questions] ([Question], [Date], [Position], [Answer1], [Answer2], [Answer3], [Answer4], [RightAnswer], [Image], [CityID])
+                          VALUES (@Question, @Date, @Position, @Answer1, @Answer2, @Answer3, @Answer4, @RightAnswer, @Image, @CityID)";
+                }
                 command.Parameters.AddWithValue("@Question", question);
                 command.Parameters.AddWithValue("@Date", DateTime.Now);
                 command.Parameters.AddWithValue("@Position", position);

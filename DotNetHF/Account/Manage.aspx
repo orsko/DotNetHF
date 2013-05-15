@@ -11,21 +11,23 @@
             <p class="message-success"><%: SuccessMessage %></p>
         </asp:PlaceHolder>
 
-        <p>You're logged in as <strong><%: User.Identity.Name %></strong>.</p>
+        <p>Bejelentkezve: <strong><%: User.Identity.Name %></strong>.</p>
 
         <asp:PlaceHolder runat="server" ID="setPassword" Visible="false">
+            <!--
             <p>
                 You do not have a local password for this site. Add a local
                 password so you can log in without an external login.
             </p>
+            -->
             <fieldset>
                 <legend>Set Password Form</legend>
                 <ol>
                     <li>
-                        <asp:Label runat="server" AssociatedControlID="password">Password</asp:Label>
+                        <asp:Label runat="server" AssociatedControlID="password">Jelszó</asp:Label>
                         <asp:TextBox runat="server" ID="password" TextMode="Password" />
                         <asp:RequiredFieldValidator runat="server" ControlToValidate="password"
-                            CssClass="field-validation-error" ErrorMessage="The password field is required."
+                            CssClass="field-validation-error" ErrorMessage="A jelszó megadása kötelező"
                             Display="Dynamic" ValidationGroup="SetPassword" />
                         
                         <asp:ModelErrorMessage runat="server" ModelStateKey="NewPassword" AssociatedControlID="password"
@@ -33,13 +35,13 @@
                         
                     </li>
                     <li>
-                        <asp:Label runat="server" AssociatedControlID="confirmPassword">Confirm password</asp:Label>
+                        <asp:Label runat="server" AssociatedControlID="confirmPassword">Jelszó még egyszer</asp:Label>
                         <asp:TextBox runat="server" ID="confirmPassword" TextMode="Password" />
                         <asp:RequiredFieldValidator runat="server" ControlToValidate="confirmPassword"
-                            CssClass="field-validation-error" Display="Dynamic" ErrorMessage="The confirm password field is required."
+                            CssClass="field-validation-error" Display="Dynamic" ErrorMessage="Jelszó még egyszeri megadása kötelező"
                             ValidationGroup="SetPassword" />
                         <asp:CompareValidator runat="server" ControlToCompare="Password" ControlToValidate="confirmPassword"
-                            CssClass="field-validation-error" Display="Dynamic" ErrorMessage="The password and confirmation password do not match."
+                            CssClass="field-validation-error" Display="Dynamic" ErrorMessage="A megadott jelszavak nem egyeznek"
                             ValidationGroup="SetPassword" />
                     </li>
                 </ol>
@@ -48,7 +50,7 @@
         </asp:PlaceHolder>
 
         <asp:PlaceHolder runat="server" ID="changePassword" Visible="false">
-            <h3>Change password</h3>
+            <h3>Jelszó módosítás</h3>
             <asp:ChangePassword runat="server" CancelDestinationPageUrl="~/" ViewStateMode="Disabled" RenderOuterTable="false" SuccessPageUrl="Manage?m=ChangePwdSuccess">
                 <ChangePasswordTemplate>
                     <p class="validation-summary-errors">
@@ -58,37 +60,37 @@
                         <legend>Change password details</legend>
                         <ol>
                             <li>
-                                <asp:Label runat="server" ID="CurrentPasswordLabel" AssociatedControlID="CurrentPassword">Current password</asp:Label>
+                                <asp:Label runat="server" ID="CurrentPasswordLabel" AssociatedControlID="CurrentPassword">Jelenlegi jelszó</asp:Label>
                                 <asp:TextBox runat="server" ID="CurrentPassword" CssClass="passwordEntry" TextMode="Password" />
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="CurrentPassword"
-                                    CssClass="field-validation-error" ErrorMessage="The current password field is required."
+                                    CssClass="field-validation-error" ErrorMessage="A jelenlegi jelszó megadása kötelező"
                                     ValidationGroup="ChangePassword" />
                             </li>
                             <li>
-                                <asp:Label runat="server" ID="NewPasswordLabel" AssociatedControlID="NewPassword">New password</asp:Label>
+                                <asp:Label runat="server" ID="NewPasswordLabel" AssociatedControlID="NewPassword">Új jelszó</asp:Label>
                                 <asp:TextBox runat="server" ID="NewPassword" CssClass="passwordEntry" TextMode="Password" />
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="NewPassword"
-                                    CssClass="field-validation-error" ErrorMessage="The new password is required."
+                                    CssClass="field-validation-error" ErrorMessage="Az új jelszó megadása kötelező"
                                     ValidationGroup="ChangePassword" />
                             </li>
                             <li>
-                                <asp:Label runat="server" ID="ConfirmNewPasswordLabel" AssociatedControlID="ConfirmNewPassword">Confirm new password</asp:Label>
+                                <asp:Label runat="server" ID="ConfirmNewPasswordLabel" AssociatedControlID="ConfirmNewPassword">Új jelszó még egyszer</asp:Label>
                                 <asp:TextBox runat="server" ID="ConfirmNewPassword" CssClass="passwordEntry" TextMode="Password" />
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="ConfirmNewPassword"
-                                    CssClass="field-validation-error" Display="Dynamic" ErrorMessage="Confirm new password is required."
+                                    CssClass="field-validation-error" Display="Dynamic" ErrorMessage="Az új jelszó mégegyszeri megadása kötelező"
                                     ValidationGroup="ChangePassword" />
                                 <asp:CompareValidator runat="server" ControlToCompare="NewPassword" ControlToValidate="ConfirmNewPassword"
-                                    CssClass="field-validation-error" Display="Dynamic" ErrorMessage="The new password and confirmation password do not match."
+                                    CssClass="field-validation-error" Display="Dynamic" ErrorMessage="A megadott jelszavak nem egyeznek"
                                     ValidationGroup="ChangePassword" />
                             </li>
                         </ol>
-                        <asp:Button runat="server" CommandName="ChangePassword" Text="Change password" ValidationGroup="ChangePassword" />
+                        <asp:Button runat="server" CommandName="ChangePassword" Text="Jelszó módosítása" ValidationGroup="ChangePassword" />
                     </fieldset>
                 </ChangePasswordTemplate>
             </asp:ChangePassword>
         </asp:PlaceHolder>
     </section>
-
+    <!--
     <section id="externalLoginsForm">
         
         <asp:ListView runat="server"
@@ -121,6 +123,7 @@
         </asp:ListView>
 
         <h3>Add an external login</h3>
-        <uc:OpenAuthProviders runat="server" ReturnUrl="~/Account/Manage" />
+        <uc:OpenAuthProviders runat="server" ReturnUrl="~/Account/Manage" />     
     </section>
+    -->
 </asp:Content>

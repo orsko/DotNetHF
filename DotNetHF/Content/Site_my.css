@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: #ccc;
+    background-color: #CCC;
     border-top: solid 10px #000;
     color: #333;
     font-size: .85em;
@@ -44,12 +44,14 @@ mark {
 
 .float-left {
     float: left;
+    width: 327px;
 }
 
 .float-right {
     float: right;
-    width: 524px;
+    width: 404px;
     margin-left: 0px;
+    margin-top: 0px;
 }
 
 .clear-fix:after {
@@ -62,7 +64,7 @@ mark {
 
 h1, h2, h3,
 h4, h5, h6 {
-    color: #fff;
+    color: #000;
     margin-bottom: 0;
     padding-bottom: 0;
 }
@@ -97,6 +99,7 @@ h5, h6 {
 .content-wrapper {
     margin: 0 auto;
     max-width: 960px;
+    height: 25px;
 }
 
 #body {
@@ -107,7 +110,7 @@ h5, h6 {
 
     .main-content {
         background: url("../Images/accent.png") no-repeat;
-        padding-left: 10px;
+        padding-right: 10px;
         padding-top: 30px;
     }
 
@@ -130,7 +133,7 @@ footer {
 /* site title
 ----------------------------------------------------------*/
 .site-title {
-    color: #fff;
+    color: #c8c8c8;
     font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
     font-size: 2.3em;
     margin: 0;
@@ -138,7 +141,7 @@ footer {
 
 .site-title a, .site-title a:hover, .site-title a:active {
     background: none;
-    color: #fff;
+    color: #c8c8c8;
     outline: none;
     text-decoration: none;
 }
@@ -151,6 +154,7 @@ footer {
     font-size: .85em;
     margin: 0 0 10px;
     text-align: right;
+    width: 377px;
 }
 
     #login a {
@@ -184,7 +188,7 @@ ul#menu {
     font-weight: 600;
     margin: 0 0 5px;
     padding: 0;
-    text-align: left;
+    text-align: right;
 }
 
     ul#menu li {
@@ -212,13 +216,15 @@ ul#menu {
     background-color: #fff;
 }
 
+    }
+
     .featured .content-wrapper {
-        background-color: #7ac0da;
-        background-image: -ms-linear-gradient(left, #33ccbb 0%, #ffffff 100%);
-        background-image: -o-linear-gradient(left, #33ccbb 0%, #ffffff 100%);
-        background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #33ccbb), color-stop(1, #ffffff));
-        background-image: -webkit-linear-gradient(left, #33ccbb 0%, #ffffff 100%);
-        background-image: linear-gradient(left, #33ccbb 0%, #ffffff 100%);
+        background-color: #66ffcc;
+        background-image: -ms-linear-gradient(left, #3333cc 0%, #33ccbb 100%);
+        background-image: -o-linear-gradient(left, #3333cc 0%, #33ccbb 100%);
+        background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #3333cc), color-stop(1, #33ccbb));
+        background-image: -webkit-linear-gradient(left, #3333cc 0%, #33ccbb 100%);
+        background-image: linear-gradient(left, #3333cc 0%, #33ccbb 100%);
         color: #3e5667;
         padding: 20px 40px 30px 40px;
     }
@@ -330,7 +336,7 @@ aside {
 
 /* login page */
 #loginForm {
-    border-right: solid 2px #c8c8c8;
+    border-right: solid 2px #66ffdd;
     float: left;
     width: 55%;
 }
@@ -418,7 +424,7 @@ fieldset {
     }
     
         input:focus, textarea:focus {
-            border: 1px solid #7ac0da;
+            border: 1px solid #33ccbb;
         }
 
         input[type="checkbox"] {
@@ -464,17 +470,12 @@ fieldset {
 }
 
 .message-success {
-    color: #7ac0da;
+    color: #33ccbb;
     font-size: 1.3em;
     font-weight: bold;
     margin: 20px 0 10px 0;
 }
 
-.error {
-    color: #e80c4d;
-}
-
-/* styles for validation helpers */
 .field-validation-error {
     color: #e80c4d;
     font-weight: bold;

@@ -4,8 +4,8 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1><%: Title %>.</h1><br/>
-                <h2>Városismereti vetélkedő adminisztrációs oldal.</h2>
+                <h1><%: Title %>.</h1>
+                <h2>Városi törtémelem kvíz adminisztrációs oldal.</h2>
             </hgroup>
             <p>
                 &nbsp;Kizárólag belépés után érhető el!</p>
