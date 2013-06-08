@@ -202,6 +202,7 @@
     <Content Include="Images\orderedList9.png" />
     <Content Include="packages.config" />
     <Content Include="Players\List.aspx" />
+    <Content Include="QuestionService.asmx" />
     <Content Include="Questions\InsertQuestionNotification.aspx" />
     <Content Include="Questions\Web.config" />
     <Content Include="Players\Web.config" />
@@ -307,6 +308,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\QuestionItem.cs" />
     <Compile Include="Players\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -315,6 +317,10 @@
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuestionService.asmx.cs">
+      <DependentUpon>QuestionService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Questions\InsertQuestionNotification.aspx.cs">
       <DependentUpon>InsertQuestionNotification.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

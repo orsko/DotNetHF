@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -54,7 +56,7 @@ namespace DotNetHF.WinForms
                 toolStripProgressBar2.Maximum = 100;
                 toolStripProgressBar2.Minimum = 0;
                 toolStripProgressBar2.Step = 50;
-                Task.Factory.StartNew(LoadDataBase);
+                LoadDataBase();
             }
         }
 
@@ -90,13 +92,43 @@ namespace DotNetHF.WinForms
         private void WriteToLabel()
         {
             NameLbl.Text = "Hello " + _firstName + "!";
-            toolStripProgressBar1.Increment(50);
+            //toolStripProgressBar1.Increment(50);
             toolStripProgressBar1.Dispose();
         }
 
-        private void LoadDataBase()
+        private async void LoadDataBase()
         {
-            
+            try
+            {
+                var url = "http://localhost:55328/QuestionService.asmx/GetQuestions";
+                var req = WebRequest.Create(url);
+                req.Method = "POST";               
+                // Create POST data and convert it to a byte array.
+                string postData = "";
+                byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+                // Set the ContentType property of the WebRequest.
+                req.ContentType = "application/xml";
+                // Set the ContentLength property of the WebRequest.
+                req.ContentLength = byteArray.Length;
+                IncrementProgressBar(20);
+                var res = await req.GetResponseAsync();
+                IncrementProgressBar(10);
+                // Get the request stream.
+                var stream = res.GetResponseStream();
+                StreamReader reader = new StreamReader(stream);
+                // Read the content.
+                string responseFromServer = reader.ReadToEnd().Replace("&gt;",">").Replace("&lt;","<").Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>","").Replace("<string xmlns=\"http://tempuri.org/\">","");
+                _loadDataComplete = true;
+                MessageBox.Show(responseFromServer);
+                reader.Close();
+                stream.Close();
+                res.Close();
+                IncrementProgressBar(70);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void IncrementProgressBar(int i)

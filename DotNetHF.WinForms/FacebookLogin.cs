@@ -56,11 +56,13 @@ namespace DotNetHF.WinForms
             {
                 // token eltarolasa
                 _accessToken = result.AccessToken;
+                form.Show();
+                Close();
             }
             else
             {
-                form.Show();
-                Close();
+                //form.Show();
+                //Close();
             }
         }
     }
