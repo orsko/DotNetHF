@@ -11,12 +11,27 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <h1>Mobile Master Page</h1>
         <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
         <section class="content-wrapper main-content clear-fix">
             <asp:ContentPlaceHolder runat="server" ID="MainContent" />
         </section>
-        <friendlyUrls:ViewSwitcher runat="server" />
+        <section id="login">
+                    <asp:LoginView ID="LoginView1" runat="server" ViewStateMode="Disabled">
+                        <AnonymousTemplate>
+                            <ul>
+                                <li><a id="registerLink" runat="server" href="~/Account/Register">Regisztráció</a></li>
+                                <li><a id="loginLink" runat="server" href="~/Account/Login">Bejelentkezés</a></li>
+                            </ul>
+                        </AnonymousTemplate>
+                        <LoggedInTemplate>
+                            <p>
+                                Hello, <a id="A1" runat="server" class="username" href="~/Account/Manage" title="Manage your account">
+                                    <asp:LoginName ID="LoginName1" runat="server" CssClass="username" /></a>!
+                                <asp:LoginStatus ID="LoginStatus1" runat="server" LogoutAction="Redirect" LogoutText="Kijelentkezés" LogoutPageUrl="~/" />
+                            </p>
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+         </section>
     </div>
     </form>
 </body>

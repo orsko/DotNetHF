@@ -4,12 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using DotNetHF.Model;
+using Newtonsoft.Json;
 
 namespace DotNetHF.Questions
 {
     public partial class Questions : System.Web.UI.Page
     {
         private const string CONNSTR = @"Data Source=tcp:t0isor0qkh.database.windows.net,1433;Initial Catalog=questions;Persist Security Info=True;User ID=onlab;Password=AUTdatabase1";
+
+        protected void Page_PreInit(object sender, EventArgs e)
+        {
+            if (Request.Browser.IsMobileDevice)
+                MasterPageFile = "~/Site.Mobile.Master";
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -222,6 +230,81 @@ namespace DotNetHF.Questions
                 }
             }
             catch (NullReferenceException exc)
+            {
+                Response.Write("<script>alert('Nincs kiválasztva kérdés')</script>");
+            }
+        }
+
+        protected void Button3_Click(object sender, EventArgs e)
+        {          
+            try
+            {
+                var id = (int)QuestionsGridView.SelectedValue;
+                // adatok lekérése az adatbázisból
+
+                using (var conn = new SqlConnection(CONNSTR))
+                {
+                    SqlCommand command = new SqlCommand();
+                    command.Connection = conn;
+                    command.CommandText =
+                        @"SELECT * FROM [Questions] WHERE [ID] = @ID";
+                    command.Parameters.AddWithValue("@ID", id);
+                    conn.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (!reader.Read())
+                        {
+                            return;
+                        }
+                        string question = reader.GetString(0);
+                        DateTime date = reader.GetDateTime(1);
+                        string position = reader.GetString(2);
+                        string answer1 = reader.GetString(3);
+                        string answer2 = reader.GetString(4);
+                        string answer3 = reader.GetString(5);
+                        string answer4 = reader.GetString(6);
+                        string rightanswer = reader.GetString(7);
+                        string image;
+                        try
+                        {
+                            image = reader.GetString(8);
+                        }
+                        catch (Exception)
+                        {
+                            image = "";
+                        }
+                        int cityId = reader.GetInt32(10);
+
+                        QuestionItem questionItem = new QuestionItem
+                            {
+                                Answer1=answer1,
+                                Answer2=answer2,
+                                Answer3=answer3,
+                                Answer4=answer4,
+                                Question=question,
+                                CityId=cityId,
+                                Date=date,
+                                Id=id,
+                                Image=image,
+                                Position=position,
+                            };
+
+                        conn.Close();
+                        Response.Clear();
+                        Response.Buffer = true;
+                        Response.ContentEncoding = Encoding.UTF8;
+                        Response.Charset = "UTF-8";
+
+                        Response.ContentType = "application/json";
+
+                        string json = JsonConvert.SerializeObject(questionItem);
+
+                        Response.Write(json);
+                        Response.End();
+                    }
+                }
+            }
+            catch (NullReferenceException exception)
             {
                 Response.Write("<script>alert('Nincs kiválasztva kérdés')</script>");
             }

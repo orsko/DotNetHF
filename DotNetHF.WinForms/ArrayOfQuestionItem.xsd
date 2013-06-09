@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xs:element name="ArrayOfQuestionItem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="QuestionItem" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:byte" name="Id"/>
+              <xs:element type="xs:string" name="Question"/>
+              <xs:element type="xs:string" name="Answer1"/>
+              <xs:element type="xs:string" name="Answer2"/>
+              <xs:element type="xs:string" name="Answer3"/>
+              <xs:element type="xs:string" name="Answer4"/>
+              <xs:element type="xs:string" name="RightAnswer"/>
+              <xs:element type="xs:dateTime" name="Date"/>
+              <xs:element type="xs:string" name="Position"/>
+              <xs:element type="xs:string" name="Image"/>
+              <xs:element type="xs:byte" name="CityId"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

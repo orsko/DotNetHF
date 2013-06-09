@@ -13,6 +13,12 @@ namespace DotNetHF.Questions
             Page.DataBind();
         }
 
+        protected void Page_PreInit(object sender, EventArgs e)
+        {
+            if (Request.Browser.IsMobileDevice)
+                MasterPageFile = "~/Site.Mobile.Master";
+        }
+
         protected void Button1_Click(object sender, EventArgs e)
         {
             Response.Redirect("~/Questions/List.aspx?NeedUpload=true");

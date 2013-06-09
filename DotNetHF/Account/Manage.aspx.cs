@@ -20,6 +20,12 @@ namespace DotNetHF.Account
             private set;
         }
 
+        protected void Page_PreInit(object sender, EventArgs e)
+        {
+            if (Request.Browser.IsMobileDevice)
+                MasterPageFile = "~/Site.Mobile.Master";
+        }
+
         protected void Page_Load()
         {
             if (!IsPostBack)
